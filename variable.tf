@@ -77,7 +77,7 @@ variable "multi_az_deployment" {
 # sns topic variable
 variable "operator_email" {
     default = "pietersonbusi@gmail.com"
-    description = "a valid email address"
+    description = "this is a valid email address"
     type = string
 } 
 
