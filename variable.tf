@@ -69,7 +69,7 @@ variable "database_instance_identifier" {
 
 variable "multi_az_deployment" {
     default = false
-    description = "create a standby db instance"
+    description = "create a standby database instance"
     type = bool
 } 
 
