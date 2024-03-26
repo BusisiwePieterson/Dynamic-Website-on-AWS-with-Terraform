@@ -5,4 +5,12 @@ In this repository, I am using terraform to create resources in aws
 
 <h2>Project Architecture</h2>
 
-<img src="terraform_architecture.png" width="800px">
+![imags](images/terraform_architecture.png)
+
+AUTHENTICATE WITH AWS
+
+![image](images/Screenshot_1.png)
+
+Store our statefile in the s3 bucket we created
+
+
