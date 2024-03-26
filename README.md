@@ -13,4 +13,13 @@ AUTHENTICATE WITH AWS
 
 Store our statefile in the s3 bucket we created
 
+![image](images/Screenshot_2.png)
+
+![image](images/Screenshot_3.png)
+
+![image](images/Screenshot_4.png)
+
+### Create a Nat Gateway
+
+
 
