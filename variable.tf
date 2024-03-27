@@ -87,3 +87,32 @@ variable "operator_email" {
   description   = "sns email address for notification"
   type          = string
 }
+
+
+# auto scaling group variable
+variable "launch_template_name" {
+  default       = "dev-launch-template"
+  description   = "name of the launch template"
+  type          = string
+}
+
+
+variable "ec2_image" {
+  default       = "ami-037b47f8995e72823"
+  description   = "id of the AMI"
+  type          = string
+}
+
+variable "ec2_instance_type" {
+  default       = "t2.micro"
+  description   = "ec2 instance type"
+  type          = string
+}
+
+variable "ec2_keypair" {
+  default       = "awskeypair"
+  description   = "ec2 keypair"
+  type          = string
+}
+
+

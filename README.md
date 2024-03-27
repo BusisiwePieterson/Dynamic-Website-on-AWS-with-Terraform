@@ -62,3 +62,25 @@ Create Application Load Balancer
 ![image](images/Screenshot_18.png)
 
 ### Create SNS Topic
+
+![image](images/Screenshot_19.png)
+
+![image](images/Screenshot_20.png)
+
+![image](images/Screenshot_21.png)
+
+![image](images/Screenshot_22.png)
+
+![image](images/Screenshot_23.png)
+
+![image](images/Screenshot_24.png)
+
+![image](images/Screenshot_25.png)
+
+### Create Auto Scaling Group
+
+
+### Create an Amazon Machine Image (AMI)
+
+Once we have installed and onfigure our website, we will use the EC2 instance we have installed our website on to create an AMI. Then we can use the AMI to launch new EC2 instances with our website already configured o them.
+
