@@ -45,3 +45,20 @@ Store our statefile in the s3 bucket we created
 
 ### Create Security Group
 
+![image](images/Screenshot_16.png)
+
+
+
+![image](images/Screenshot_17.png)
+
+![image](images/Screenshot_18.png)
+
+![image](images/Screenshot_17.png)
+
+![image](images/Screenshot_17.png)
+
+Create Application Load Balancer
+
+![image](images/Screenshot_18.png)
+
+### Create SNS Topic

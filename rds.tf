@@ -2,7 +2,7 @@
 # terraform aws db subnet group
 resource "aws_db_subnet_group" "database_subnet_group" {
   name         = "database subnets"
-  subnet_ids   = [private_data_subnet_az1_cidr.id, private_data_subnet_az2_cidr.id]
+  subnet_ids   = [aws_subnet.private_data_subnet_az1.id, aws_subnet.private_data_subnet_az2.id]
   description  = "subnets for database instance"
 
   tags   = {
@@ -15,7 +15,7 @@ resource "aws_db_subnet_group" "database_subnet_group" {
 data "aws_db_snapshot" "latest_db_snapshot" {
   db_snapshot_identifier = var.database_snapshot_identifier
   most_recent            = true
-  snapshot_type          = manual
+  snapshot_type          = "manual"
 }
 
 # create database instance restored from db snapshots
