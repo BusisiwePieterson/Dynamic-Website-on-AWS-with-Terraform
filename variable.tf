@@ -115,4 +115,17 @@ variable "ec2_keypair" {
   type          = string
 }
 
+# route 45 variable
+variable "domain_name" {
+  default       = "busidevopsengineer.guru"
+  description   = "domain name"
+  type          = string
+}
+
+variable "record_name" {
+  default       = "www"
+  description   = "sub domain name"
+  type          = string
+}
+
 
