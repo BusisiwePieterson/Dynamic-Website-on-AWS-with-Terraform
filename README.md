@@ -1,11 +1,23 @@
-#  Dynamic Website with Terraform
-Deploying a Dynamic Website on AWS with Terraform
+![imags](images/terraform_architecture.png) 
 
-In this repository, I am using terraform to create resources in aws
+In this project, I am deploying a highly available, fault-tolerant 3-Tier Website on AWS using Terraform. The website will be hosted inside a Virtual Private Cloud, also known as a VPC. Within the VPC, we will create our Public and Private Subnets. Inside the Subnets, we will have our Nat Gateways in the Public Subnets, while EC2 instances and Databases will reside in the Private Subnets. Additionally, we will set up an Internet Gateway, SNS notifications, add Auto-Scaling, configure Route 53, and secure our website using Certificate Manager.
 
-<h2>Project Architecture</h2>
 
-![imags](images/terraform_architecture.png)
+
+Before we dive into the project, there are some prerequisites. You need to have the following setup before starting:
+
+- Install Terraform
+- Sign up for a GitHub account
+- Have Git installed
+- Create Key Pairs
+- Add your public SSH key to GitHub
+- Have VSCode installed
+- Install the AWS command line (CLI) on a windows computer
+
+
+
+
+
 
 AUTHENTICATE WITH AWS
 
@@ -84,3 +96,26 @@ Create Application Load Balancer
 
 Once we have installed and onfigure our website, we will use the EC2 instance we have installed our website on to create an AMI. Then we can use the AMI to launch new EC2 instances with our website already configured o them.
 
+![image](images/Screenshot_26.png)
+
+![image](images/Screenshot_27.png)
+
+![image](images/Screenshot_28.png)
+
+![image](images/Screenshot_29.png)
+
+![image](images/Screenshot_30.png)
+
+![image](images/Screenshot_31.png)
+
+![image](images/Screenshot_32.png)
+
+![image](images/Screenshot_33.png)
+
+![image](images/Screenshot_34.png)
+
+![image](images/Screenshot_35.png)
+
+![image](images/Screenshot_36.png)
+
+![image](images/Screenshot_37.png)
