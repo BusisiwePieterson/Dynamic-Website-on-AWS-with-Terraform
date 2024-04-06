@@ -15,7 +15,31 @@ Before we dive into the project, there are some prerequisites. You need to have 
 - Install the AWS command line (CLI) on a windows computer
 
 
+Now, it's time for us to get our hands dirty, but first, let's understand what Terraform is.
 
+
+Terraform is an Infrastructure as Code (IAC) tool primarily used by DevOps teams to automate various infrastructure tasks. Provisioning cloud resources, for instance, is one of the main use cases of Terraform.
+
+Terraform allows you to describe your complete infrastructure in code form. Even if your servers come from different providers such as AWS or Azure, Terraform helps you build and manage these resources in parallel across providers. Terraform integrates seamlessly with CI/CD pipelines, allowing infrastructure changes to be automatically applied as part of the deployment process. This enables fast, repeatable, and automated deployments while maintaining infrastructure consistency.
+
+## GitHub Repository Setup
+
+
+Create a GitHub repository where you will store your project code. Make the repository public, but please note that in the real world, it would be private. Add a README and on the `.gitignore` drop-down menu enter Terraform.
+
+![image](images/Screenshot_38.png)
+
+Copy the link to your repository. This is the link you'll use to clone the repository to your local machine, enabling you to start writing code on it.
+
+
+![image](images/Screenshot_39.png)
+
+Open your command line, Powershell, or Windows CLI, and clone your repository. I have cloned the repository to my desktop, but you can clone it anywhere on your computer. Then, enter `code .` to open VSCode.
+
+![image](images/Screenshot_40.png)
+
+
+## S3 Bucket for Remote State
 
 
 
@@ -31,7 +55,7 @@ Store our statefile in the s3 bucket we created
 
 ![image](images/Screenshot_4.png)
 
-### Create a Nat Gateway
+## Create a Nat Gateway
 
 ![image](images/Screenshot_5.png)
 
