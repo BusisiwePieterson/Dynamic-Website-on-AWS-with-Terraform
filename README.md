@@ -41,15 +41,51 @@ Open your command line, Powershell, or Windows CLI, and clone your repository. I
 
 ## S3 Bucket for Remote State
 
+When you use Terraform to create resources in AWS, Terraform will record the information about the resources you created in a Terraform state file. The next time you go to update those resources, Terraform will use the state file to find those resources and update them accordingly.
+
+We will store our Terraform state in an S3 bucket. This will ensure that our state is stored reliably.
+
+In the **S3 management console, click create bucket**. Provide a unique name to your bucket, select the region for your S3 Bucket `us-east-1` and enable bucket versioning. Click create bucket.
 
 
-AUTHENTICATE WITH AWS
 
-![image](images/Screenshot_1.png)
+![image](images/Screenshot_42.png)
 
-Store our statefile in the s3 bucket we created
+
+Now that we have our S3 Bucket, to prevent multiple users from making changes to the state at the same time, we create a DynamoDB Table to lock the Terraform state.
+
+![image](images/Screenshot_43.png)
+
+## Creating AWS Resources with Terraform
+
+First, configure an AWS Provider to establish a secure connection between Terraform and AWS. Specify the provider that you will be using (e.g., Azure, AWS, GCP), and specify the region in which you will build the resources. If you have a named profile, enter its name.
+
+
+Create a file named `main.tf`, or you can create separate files for the backend and provider by executing the following commands:
+
+```
+touch provider.tf backend.tf
+
+```
+
+Then, store the state file in the S3 bucket, and lock it with the DynamoDB table that you created.
+
+```
+terraform {
+  backend "s3" {
+    bucket = "mybucket"
+    key    = "path/to/my/key"
+    region = "us-east-1"
+  }
+}
+
+```
+
+
 
 ![image](images/Screenshot_2.png)
+
+## Creating a 3-Tier VPC
 
 ![image](images/Screenshot_3.png)
 
