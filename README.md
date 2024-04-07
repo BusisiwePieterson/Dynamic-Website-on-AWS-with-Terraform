@@ -88,7 +88,6 @@ terraform {
 ## Creating a 3-Tier VPC
 
 
-
 The following architecture outlines the components included in our VPC:
 
 
