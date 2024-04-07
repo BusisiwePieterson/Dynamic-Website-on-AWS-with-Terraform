@@ -145,7 +145,7 @@ Create the variables for the subnets in the `variables.tf` file and assign the t
 
 Create the subnet resources for the 2 subnets and call the variables created above. Use the `aws_subnet` resource type and refer to the variables you defined earlier.
 
-In this configuration, we are referencing the VPC ID variable var.`vpc_id` and the CIDR block variables for each subnet `var.public_subnet_cidr_az1` and `var.public_subnet_cidr_az2`. Additionally, we specify the availability zones using the variables `var.availability_zone_1` and `var.availability_zone_2`.
+In this configuration, we are referencing the VPC ID variable **var.vpc_id** and the CIDR block variables for each subnet **var.public_subnet_cidr_az1** and **var.public_subnet_cidr_az2**. Additionally, we specify the availability zones using the variables **var.availability_zone_1** and **var.availability_zone_2**.
 
 
 ![image](images/Screenshot_47.png)
