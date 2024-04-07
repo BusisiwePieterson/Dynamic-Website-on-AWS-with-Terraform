@@ -239,59 +239,160 @@ Open your project folder and create a Terraform file for the security group. Nam
 
 - Create a security group for our **Application Load Balancer (ALB)** and open `HTTP port 80 and HTTPS port 443`. Allow traffic from anywhere `(0.0.0.0/0)` as the source.
 
+![image](images/Screenshot_55.png)
+
 - Create a security group for SSH access, allowing traffic on `port 22` only from `your IP address`.
 
+![image](images/Screenshot_56.png)
+
 - Create a security group for the web servers, allowing inbound traffic on `ports 80 and 443` from the `ALB security group`, and on `port 22` from the `SSH security group`.
+
+![image](images/Screenshot_57.png)
 
 
 - Create a security group for the database servers, allowing inbound traffic on `port 3306` from the `web server security group`.
 
+![image](images/Screenshot_58.png)
 
+After creating the **security-group.tf** file, navigate to your project directory in the terminal and run `terraform apply` to apply the changes and create the security groups as specified. Verify these security groups in your AWS account.
 
 ![image](images/Screenshot_16.png)
 
 
+## Create RDS
+
+We are using MySQL RDS database. We will create the RDS database by restoring it from a snapshot. To start, open your project folder and create a Terraform file for the RDS. Call it `rds.tf`.
+
+Here are the resources that we will create in Terraform:
+
+- Create database subnet group.
+- Get the latest DB snapshot.
+- Create database instance restored from DB snapshots.
+
+![image](images/Screenshot_59.png)
+
+
+Open a new terminal and run `terraform apply` It will show you the plan and if you are happy with it type `yes`
+
+Let’s verify it on the management console.
+
 
 ![image](images/Screenshot_17.png)
+
+## Create Application Load Balancer
+
+We are using EC2 instances to host our website. An Application Load Balancer (ALB) is used to distribute web traffic across EC2 instances in multiple Availability Zones (AZs). We’re going to create an ALB to route traffic to the web servers in the private subnet. Open your project folder and create a file named `alb.tf`.
 
 ![image](images/Screenshot_18.png)
 
-![image](images/Screenshot_17.png)
+To create an internet-facing ALB, set the `internal` attribute to `false`. Use the security group that we created for the application load balancer. To reference this, copy the resource type and reference name of the ALB security group from the `security-group.tf` file. For subnet mapping, specify the public subnets in availability zones 1 and 2, which are where we want to put the ALB. Reference them from your `vpc.tf` file by copying the resource type and reference name of the public subnet in availability zones 1 and 2. The arguments should look like this:
 
-![image](images/Screenshot_17.png)
+![image](images/image.png)
 
-Create Application Load Balancer
+#### Creating the target group
 
-![image](images/Screenshot_18.png)
+The **vpc_id** is the ID of the VPC where we want to create this target group. Reference it from your `vpc.tf` file and copy any of the **vpc_id** defined there. So far, our `alb.tf` file should look like this:
 
-### Create SNS Topic
+![image](images/Screenshot_60.png)
 
-![image](images/Screenshot_19.png)
+#### Create a listener on port 80 with redirect action
+
+The `load_balancer_arn` is the ARN of the application load balancer. Reference the resource type for the ALB and the reference name `aws_lb.application_load_balancer.arn`. The resource should look like this:
+
+![image](images/Screenshot_61.png)
+
+#### Create a listener on port 443 with forward action
+
+The last resource will create the HTTPS listener on port 443. The `load_balancer_arn` is the ARN of the ALB we created above. Just copy the resource type and reference name. Remove the quotes, add a period, and put `.arn` at the end — this is the attribute that we are referencing.
+
+Next, let’s create a variable for `certificate_arn`. For the default value, go to AWS Certificate Manager (ACM) in your AWS console, and copy the ARN of your SSL certificate.
+
+![image](images/Screenshot_63.png)
+
+
+Copy the variable name and reference it in your `alb.tf` file. The next argument is the `target_group_arn` — this is the ARN of our target group. In the `alb.tf` file, copy the resource type and reference name of the target group above. Reference it by pasting it beside `target_group_arn`. We completed the arguments and it should look like this:
+
+![image](images/Screenshot_62.png)
+
+
+After running `terraform apply`, you can go to your management console to verify that the resources were created.
+
+**Here is Load Balancer**
 
 ![image](images/Screenshot_20.png)
 
+**Listeners**
+
 ![image](images/Screenshot_21.png)
+
+**Target group**
 
 ![image](images/Screenshot_22.png)
 
-![image](images/Screenshot_23.png)
+## Create SNS Topic
 
-![image](images/Screenshot_24.png)
+
+We are using **SNS** to receive notifications. We’re going to create a Terraform file for an **SNS topic**. Create a new file and call it `sns.tf`.
+
+![image](images/Screenshot_65.png)
+
+`sns.tf` should look like this
+
+![image](images/Screenshot_64.png)
+
+ Run `terraform apply` If the plan looks correct type `yes` after the confirmation. Then, go to the AWS account and verify if its there.
+
 
 ![image](images/Screenshot_25.png)
+
+
+Check the email that you entered for SNS notification and confirm the subscription
+
+![image](images/Screenshot_23.png)
+![image](images/Screenshot_24.png)
+
+
+
+## Create Auto Scaling Group
+
+Using auto scaling group to dynamically create our EC2 instances to make our website.
+
+![image](images/Screenshot_18.png)
+
+
+### Create Launch Template
+
+Create a new file in Visual Studio Code named `asg.tf`. 
+
+
+First, create a launch template. It helps with defining the configuration details for launching instances in an auto-scaling group (ASG). It serves as a blueprint for the instances.
+
+![image](images/Screenshot_70.png)
+
+Your `asg.tf` should look like this:
+
+![image](images/Screenshot_68.png)
 
 ### Create Auto Scaling Group
 
 
+Now that we have created the launch templates, it is time to create our **auto-scaling group**. The **auto-scaling group** will have the **desired capacity**, **maximum size**, and **minimum size**. It will also check for health status using an **elastic load balancer**.
+
+![image](images/Screenshot_71.png)
+
+
+
 ### Create an Amazon Machine Image (AMI)
 
-Once we have installed and onfigure our website, we will use the EC2 instance we have installed our website on to create an AMI. Then we can use the AMI to launch new EC2 instances with our website already configured o them.
+Once we have installed and configure our website, we will use the EC2 instance we have installed our website on to create an AMI. Then we can use the AMI to launch new EC2 instances with our website already configured o them.
 
 ![image](images/Screenshot_26.png)
 
 ![image](images/Screenshot_27.png)
 
 ![image](images/Screenshot_28.png)
+
+![image](images/Screenshot_19.png)
 
 ![image](images/Screenshot_29.png)
 
