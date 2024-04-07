@@ -150,7 +150,7 @@ In this configuration, we are referencing the VPC ID variable var.`vpc_id` and t
 
 ![image](images/Screenshot_47.png)
 
-The next resource we're going to create is our route table, and we will add routes to that route table.
+The next resource we're going to create is our Route Table, and we will add routes to that route table.
 
 ![image](images/Screenshot_49.png)
 
@@ -168,39 +168,86 @@ These variables define the CIDR blocks for each of the private subnets in the re
 
 ![image](images/Screenshot_52.png)
 
+Now it's time to run the code for the VPC. Before you run your Terraform code, always ensure that you are in the directory where your code is located.
 
-
-
-
-### Create a Nat Gateway
-
-
-
+Type `terraform init` and press Enter to initialize Terraform.
 
 
 ![image](images/Screenshot_4.png)
 
+
+Once Terraform has initialized, run `terraform plan`. This command will show you the plan of the resources that Terraform will create.
+
 ![image](images/Screenshot_6.png)
 
-![image](images/Screenshot_7.png)
+Once you are satisfied with the plan, run `terraform apply` to apply and create the resources as specified.
 
+![image](images/Screenshot_7.png)
 ![image](images/Screenshot_8.png)
+
+You will now see that Terraform has created the resources. To verify this, open your management console and search for VPC. You will see that Terraform created the VPC named `dev vpc`, and under subnets, you will see that all the subnets were created.
 
 ![image](images/Screenshot_9.png)
 
 ![image](images/Screenshot_10.png)
 
+## Create a Nat Gateway
+
+The NAT Gateway allows the instances in the private app subnets and private data subnets to access the internet.
+The Private Route Table is associated with the private subnets and routes traffic to the internet through the NAT gateway.
+
 ![image](images/Screenshot_11.png)
+
+
+
+To begin creating your NAT gateway, navigate to your project folder and create a file named `nat-gateway.tf`.
+
+Before creating the NAT Gateway, allocate Elastic IPs for availability zone 1 and 2. These Elastic IPs will be used for the NAT Gateways in the public subnets az1 and az2.
+
+![image](images/Screenshot_53.png)
+
+
+You will create 2 NAT Gateways, one in the first availability zone and the other in the second availability zone. Therefore, you need to allocate 2 Elastic IP addresses. It should look like this:
+
+![image](images/Screenshot_54.png)
+
+Save your file and open a new terminal. Run `terraform plan` to verify the plan. If all the information is correct, run `terraform apply` to create the resources in our AWS account.
+
+
+**The 2 elastic IP addresses**
 
 ![image](images/Screenshot_12.png)
 
+**The 2 NAT gateways**
+
 ![image](images/Screenshot_13.png)
 
-![image](images/Screenshot_14.png)
 
+The **2 route tables** we created. For each route table there are **2 explicit subnet association**. If you select **Private route table az1** then click **Subnet associations** you can see that the 2 private subnets are associated with this route table.
+
+![image](images/Screenshot_14.png)
 ![image](images/Screenshot_15.png)
 
-### Create Security Group
+After reviewing the resources that Terraform created in the management console and ensuring everything is correct, it's time to push the code to GitHub.
+
+In the visual studio code, let’s push the new updates to our GitHub repository. Select *Source control > type your commit message > Click the check mark > Sync changes*.
+
+## Create Security Group
+
+To control access and mitigate potential security risks for our resources, we will create ingress (inbound) security groups.
+
+Open your project folder and create a Terraform file for the security group. Name the file `security-group.tf`.
+
+- Create a security group for our **Application Load Balancer (ALB)** and open `HTTP port 80 and HTTPS port 443`. Allow traffic from anywhere `(0.0.0.0/0)` as the source.
+
+- Create a security group for SSH access, allowing traffic on `port 22` only from `your IP address`.
+
+- Create a security group for the web servers, allowing inbound traffic on `ports 80 and 443` from the `ALB security group`, and on `port 22` from the `SSH security group`.
+
+
+- Create a security group for the database servers, allowing inbound traffic on `port 3306` from the `web server security group`.
+
+
 
 ![image](images/Screenshot_16.png)
 
