@@ -12,7 +12,7 @@ Before we dive into the project, there are some prerequisites. You need to have 
 - Create Key Pairs
 - Add your public SSH key to GitHub
 - Have VSCode installed
-- Install the AWS command line (CLI) on a windows computer
+- Install the AWS command line (CLI) on a windows computer.
 
 
 Now, it's time for us to get our hands dirty, but first, let's understand what Terraform is.
@@ -87,13 +87,98 @@ terraform {
 
 ## Creating a 3-Tier VPC
 
+
+
+The following architecture outlines the components included in our VPC:
+
+
 ![image](images/Screenshot_3.png)
 
+-  VPC with public and private subnets distributed across 2 availability zones.
+-  An Internet Gateway facilitates communication between instances in the VPC and the internet.
+-  We are using 2 Availability Zones for high availability and fault tolerance.
+-  Resources such as NAT gateway, Bastion Host, and Application Load Balancer use Public Subnets.
+-  We will put the webservers and database servers in the Private Subnets to protect them.
+-  The Public Route Table is associated with the public subnets and directs traffic to the internet via the internet gateway.
+-  The Main Route Table is associated with the private subnets.
+
+
+
+First, we will create a variables file. Think of a variable as a placeholder that you can use to store a value, and you can reference that value later on in your project. You will place all the variables for your project in this file.
+
+Open VSCode, next open create a file named `variable.tf` then create the variables for the VPC. W are using the cidr block that is in our architecture diagram  `"10.0.0.0/16"`
+
+![image](images/Screenshot_44.png)
+
+
+Once you have created the variable for your VPC CIDR block, create a new file and name it `vpc.tf`. In the VPC file, we can reference this variable. To reference this CIDR block in your VPC file, type `var` then the variable name `vpc_cidr`. You will notice that if you only type var, the rest of the variable name, which is `vpc_cidr`, will populate.
+
+```
+
+# terraform aws create vpc
+resource "aws_vpc" "vpc" {
+  cidr_block              = var.vpc_cidr
+  instance_tenancy        = "default"
+  enable_dns_hostnames    = true
+
+  tags      = {
+    Name    = "dev vpc"
+  }
+}
+```
+
+![image](images/Screenshot_45.png)
+
+Next, we'll define an **Internet Gateway** and attach it to the VPC we just created. 
+
+To create the Internet Gateway, we specified the resource type as `"aws_internet_gateway"` and assigned the local resource name `"internet_gateway"`
+
+![image](images/Screenshot_46.png)
+
+
+The next resources we'll create are our public subnets, one in availability zone 1 and the other in availability zone 2, named `public_subnet_az1` and `public_subnet_az2` respectively.
+
+Create the variables for the subnets in the `variables.tf` file and assign the the required values as per the architecture diagram. 
+
+![image](images/Screenshot_48.png)
+
+
+Create the subnet resources for the 2 subnets and call the variables created above. Use the `aws_subnet` resource type and refer to the variables you defined earlier.
+
+In this configuration, we are referencing the VPC ID variable var.`vpc_id` and the CIDR block variables for each subnet `var.public_subnet_cidr_az1` and `var.public_subnet_cidr_az2`. Additionally, we specify the availability zones using the variables `var.availability_zone_1` and `var.availability_zone_2`.
+
+
+![image](images/Screenshot_47.png)
+
+The next resource we're going to create is our route table, and we will add routes to that route table.
+
+![image](images/Screenshot_49.png)
+
+
+Then, you will associate our public subnets in availability zones 1 and 2 with the route table you just created.
+
+![image](images/Screenshot_50.png)
+
+
+You will now create the rest of the subnets, all of which will be private. This includes 2 private app subnets for availability zones 1 and 2, as well as 2 private data subnets for availability zones 1 and 2.
+
+![image](images/Screenshot_51.png)
+
+These variables define the CIDR blocks for each of the private subnets in the respective availability zones. Adjust the CIDR blocks according to your specific requirements.
+
+![image](images/Screenshot_52.png)
+
+
+
+
+
+### Create a Nat Gateway
+
+
+
+
+
 ![image](images/Screenshot_4.png)
-
-## Create a Nat Gateway
-
-![image](images/Screenshot_5.png)
 
 ![image](images/Screenshot_6.png)
 
