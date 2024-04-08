@@ -336,7 +336,7 @@ We are using **SNS** to receive notifications. We’re going to create a Terrafo
 
 ![image](images/Screenshot_65.png)
 
-`sns.tf` should look like this
+**sns.tf** should look like this
 
 ![image](images/Screenshot_64.png)
 
@@ -369,7 +369,7 @@ First, create a launch template. It helps with defining the configuration detail
 
 ![image](images/Screenshot_70.png)
 
-Your `asg.tf` should look like this:
+Your **asg.tf** should look like this:
 
 ![image](images/Screenshot_68.png)
 
@@ -380,34 +380,91 @@ Now that we have created the launch templates, it is time to create our **auto-s
 
 ![image](images/Screenshot_71.png)
 
-
-
-### Create an Amazon Machine Image (AMI)
-
-Once we have installed and configure our website, we will use the EC2 instance we have installed our website on to create an AMI. Then we can use the AMI to launch new EC2 instances with our website already configured o them.
-
-![image](images/Screenshot_26.png)
-
-![image](images/Screenshot_27.png)
-
-![image](images/Screenshot_28.png)
-
-![image](images/Screenshot_19.png)
-
-![image](images/Screenshot_29.png)
-
-![image](images/Screenshot_30.png)
-
-![image](images/Screenshot_31.png)
-
-![image](images/Screenshot_32.png)
-
-![image](images/Screenshot_33.png)
-
-![image](images/Screenshot_34.png)
+ Run `terraform apply` If the plan looks correct type `yes` after the confirmation. Then, go to the AWS account and verify if its there.
 
 ![image](images/Screenshot_35.png)
 
+
+
+
+## Register a Domain with Route 53
+
+
+We are using Route 53 to register our domain name and create a record set. Create a new file in Visual Studio Code named `route-53.tf`.
+
+
+To register a domain with Route 53, follow the steps outlined in the official AWS Documentation:
+
+- Sign in to the AWS Management Console: Navigate to the AWS Management Console at https://console.aws.amazon.com/.
+
+- Open the Route 53 Console: In the AWS Management Console, search for "Route 53" in the services search bar and select "Route 53" from the options.
+
+- Choose "Registered Domains": In the Route 53 dashboard, select "Registered Domains" from the navigation pane on the left side of the console.
+
+- Choose "Register Domain": On the "Registered Domains" page, choose the "Register Domain" button.
+
+- Search for a Domain: Enter the domain name you want to register in the search box and choose "Check". Route 53 will check the availability of the domain name.
+
+- Select a Domain: If the domain name is available, select it from the search results and choose "Add to cart".
+
+- Review and Purchase: Review the domain details, pricing, and configuration options. Once you are satisfied, choose "Continue".
+
+- Configure DNS Settings: Configure the DNS settings for the domain, including the hosted zone and default DNS records. You can choose to configure these settings later if desired.
+
+- Review and Purchase: Review the final details of the domain registration, including pricing and configuration options. If everything looks correct, choose "Complete Purchase" to register the domain.
+
+- Verify Contact Information: If necessary, follow the prompts to verify your contact information. This may involve confirming your email address or providing additional contact details.
+
+- Complete Registration: Once the domain registration is complete, you will receive confirmation from AWS. You can now manage your domain settings and DNS records through the Route 53 console.
+
+### Create a Hosted Zone
+
+
+Now that the domain is registered, it is time to create a hosted zone so that Route 53 can have information about how to route traffic on the internet for the domain.
+
+Creating a hosted zone in Route 53 is necessary to manage DNS and route traffic for that domain on the internet.
+
+**variable.tf**
+![image](images/Screenshot_72.png)
+
+**route-53.tf**
+
+![image](images/Screenshot_73.png)
+
+
+### Create a Record Set
+
+ With the hosted zone created, it is time to create a record set. You need to create a record set within that hosted zone to map the domain name to an IPv4 address, allowing the website to be accessible on the internet.
+
+ ![image](images/Screenshot_74.png)
+
+ ![image](images/Screenshot_75.png)
+
+ Run `terraform apply` If the plan looks correct type `yes` after the confirmation. Then, go to the AWS account and verify if its there.
+
+We can see the record set here and its pointing to the application load balancer’s DNS name. 
+
+The next step is to verify if we can access our website! Copy your record name (domain name).
+
 ![image](images/Screenshot_36.png)
+
+
+
+
+Open a browser and paste the copied record name (domain name) into the address bar. Press enter.
+
+![image](images/Screenshot_31.png)
+
+## Certificate Manager
+
+
+
+![image](images/Screenshot_19.png)
+
+
+
+
+
+
 
 ![image](images/Screenshot_37.png)
