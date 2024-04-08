@@ -457,6 +457,11 @@ Open a browser and paste the copied record name (domain name) into the address b
 
 ![image](images/Screenshot_37.png)
 
+
+## Clean Up
+
+We've created all the resources in our reference architecture and completed our project. To avoid incurring further costs, let's clean up the resources we used in Terraform to create in our AWS account. Open your project folder, launch a new terminal, and execute the command `terraform destroy`.
+
 # THE END !!
 
 
