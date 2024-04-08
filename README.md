@@ -453,18 +453,15 @@ The next step is to verify if we can access our website! Copy your record name (
 
 Open a browser and paste the copied record name (domain name) into the address bar. Press enter.
 
-![image](images/Screenshot_31.png)
-
-## Certificate Manager
-
-
-
-![image](images/Screenshot_19.png)
-
-
-
-
-
 
 
 ![image](images/Screenshot_37.png)
+
+# THE END !!
+
+
+
+
+
+
+
